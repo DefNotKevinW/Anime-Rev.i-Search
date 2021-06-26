@@ -1,0 +1,638 @@
+/* 
+Ideas:
+-follow the screenshot taken (file is in photos > screenshots)
+- use a higher saturation on the background of the anime details section so its easier to 
+group information into character by character, rather than the center content being incorrectly grouped together
+- align the side bar so that it is on the same vertical level as the first character card
+- left align the external links (but still in line with the side bar)
+- another suggestion is to just change the orientation of the side bar to horizontal and place it before characters
+*/
+
+* {box-sizing:border-box}
+
+:root {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background-color: #F9F9F9;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,Segoe UI,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.hFlex {
+    display: flex;
+    justify-content: center;
+}
+
+.vFlex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mainContent {
+    display: none;
+}
+
+h2 {
+    color: #333;
+}
+
+li {
+    color: #54595f;
+}
+
+p {
+    color: #54595f;
+}
+
+/* HEADER */
+header {
+    height: 30vh;
+    background-color: #0072ff;
+    background-image: linear-gradient(30deg, #0072ff 0%, #00c6ff 100%);
+    box-shadow:0 4px 16px rgb(0 0 0 / 20%);
+}
+
+header h1 {
+    color: #FFFFFF;
+    margin: 15px 0 25px 0;
+    font-size: 3rem;
+}
+
+header p {
+    color: #F9F9F9;
+    font-size: 1rem;
+}
+
+.innerHeaderWrapper {
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+}
+
+.drag * {
+    pointer-events: none;
+}
+
+.highlight {
+    -webkit-transition: background-color 0.15s ease-out;
+    -moz-transition: background-color 0.15s ease-out;
+    -o-transition: background-color 0.15s ease-out;
+    transition: background-color 0.15s ease-out;
+    background-color: #00c6ff;
+    border: 2px solid #0072ff;
+}
+
+.submitionForm {
+    align-items: center;
+    min-height: 4vh;
+    margin-bottom: 10px;
+}
+
+.searchbar {
+    outline: 0;
+    background-color: #FFFFFF;
+    padding: 0 1.6rem;
+    border-radius: 2px;
+    appearance: none;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,Segoe UI,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+    font-size: 1.2rem;
+}
+
+.submitionForm label {
+    display: flex;
+    align-items: center;
+    padding: 7px 25px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    color: black;
+    border-radius: 2px;
+    margin-right: 10px;
+
+    background-size: 100% 200%;
+    background-image: linear-gradient(to top, #00c6ff 50%, #FFFFFF 50%);
+    -webkit-transition: background-position 0.25s ease-out, 
+        color 0.5s ease-out;
+    -moz-transition: background-position 0.25s ease-out, 
+        color 0.5s ease-out;
+    -o-transition: background-position 0.25s ease-out, 
+        color 0.5s ease-out;
+    transition: background-position 0.25s ease-out,
+        color 0.5s ease-out;
+}
+
+.submitionForm label:hover {
+    background-position: 0% 100%;
+    color: #FFFFFF;
+}
+
+#fileElem {
+    display: none;
+}
+
+.submitionForm img {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    background-color: #FFFFFF;
+    border-radius: 40px;
+}
+
+.submitionForm img:hover {
+    cursor: pointer;
+    animation: changeOpacity 0.2s;
+    -o-animation: changeOpacity 0.2s;
+    -moz-animation: changeOpacity 0.2s;
+    -webkit-animation: changeOpacity 0.2s;
+
+    animation-timing-function: ease-out;
+    -o-animation-timing-function: ease-out;
+    -moz-animation-timing-function: ease-out;
+    -webkit-animation-timing-function: ease-out;
+
+    animation-fill-mode: forwards;
+    -o-animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+
+@keyframes changeOpacity {
+    0% {
+        opacity: 100%;
+    }
+    100% {
+        opacity: 70%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .submitionForm {
+        min-height: unset;
+    }
+
+    header {
+        height: unset;
+    }
+
+    header h1 {
+        text-align: center;
+    }
+}
+
+/* HELP TOOL-TIP */
+
+[dataTooltip] {
+    position: relative;
+    z-index: 10;
+}
+
+/* Positioning and visibility settings of the tooltip */
+[dataTooltip]:before,
+[dataTooltip]:after {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    left: 50%;
+    bottom: calc(100% + 5px); /* 5px is the size of the arrow */
+    pointer-events: none;
+
+    transition: 0.15s;
+    -o-transition: 0.15s;
+    -moz-transition: 0.15s;
+    -webkit-transition: 0.15s;
+    will-change: transform;
+}
+
+/* The actual tooltip with a dynamic width */
+[dataTooltip]:before {
+    content: attr(dataTooltip);
+    padding: 10px 18px;
+    min-width: 50px;
+    max-width: 300px;
+    width: max-content;
+    width: -moz-max-content;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: rgba(59, 72, 80, 0.9);
+    background-image: linear-gradient(30deg,
+    rgba(59, 72, 80, 0.44),
+    rgba(59, 68, 75, 0.44),
+    rgba(60, 82, 88, 0.44));
+    box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    text-align: center;
+    white-space: pre-wrap;
+    
+    transform: translate(-50%, -5px) scale(0.5);
+    -o-transform: translate(-50%, -5px) scale(0.5);
+    -ms-transform: translate(-50%, -5px) scale(0.5);
+    -moz-transform: translate(-50%, -5px) scale(0.5);
+    -webkit-transform: translate(-50%, -5px) scale(0.5);
+}
+
+/* Tooltip arrow */
+[dataTooltip]:after {
+    content: '';
+    border-style: solid;
+    border-width: 5px 5px 0px 5px; /* CSS triangle */
+    border-color: rgba(55, 64, 70, 0.9) transparent transparent transparent;
+    
+    transition-duration: 0s; /* If the mouse leaves the element, 
+                                the transition effects for the 
+                                tooltip arrow are "turned off" */
+    -o-transition-duration: 0s;
+    -moz-transition-duration: 0s;
+    -webkit-transition-duration: 0s;
+
+    transform-origin: top;   /* Orientation setting for the
+                                slide-down effect */
+    -o-transform-origin: top;
+    -ms-transform-origin: top;
+    -moz-transform-origin: top;
+    -webkit-transform-origin: top;
+
+    transform: translateX(-50%) scaleY(0);
+    -o-transform: translateX(-50%) scaleY(0);
+    -ms-transform: translateX(-50%) scaleY(0);
+    -moz-transform: translateX(-50%) scaleY(0);
+    -webkit-transform: translateX(-50%) scaleY(0);
+}
+
+/* Tooltip becomes visible at hover */
+[dataTooltip]:hover:before,
+[dataTooltip]:hover:after {
+    visibility: visible;
+    opacity: 1;
+}
+/* Scales from 0.5 to 1 -> grow effect */
+[dataTooltip]:hover:before {
+    transition-delay: 0.1s;
+    -moz-transition-delay: 0.1s;
+    -moz-transition-delay: 0.1s;
+    -webkit-transition-delay: 0.1s;
+
+    transform: translate(-50%, -5px) scale(1);
+    -o-transform: translate(-50%, -5px) scale(1);
+    -ms-transform: translate(-50%, -5px) scale(1);
+    -moz-transform: translate(-50%, -5px) scale(1);
+    -webkit-transform: translate(-50%, -5px) scale(1);
+}
+/* 
+    Arrow slide down effect only on mouseenter (NOT on mouseleave)
+*/
+[dataTooltip]:hover:after {
+    transition-delay: 0.18s; /* Starting after the grow effect */
+    -o-transition-delay: 0.18s;
+    -moz-transition-delay: 0.18s;
+    -webkit-transition-delay: 0.18s;
+
+    transition-duration: 0.2s;
+    -o-transition-duration: 0.2s;
+    -moz-transition-duration: 0.2s;
+    -webkit-transition-duration: 0.2s;
+
+    transform: translateX(-50%) scaleY(1);
+    -o-transform: translateX(-50%) scaleY(1);
+    -ms-transform: translateX(-50%) scaleY(1);
+    -moz-transform: translateX(-50%) scaleY(1);
+    -webkit-transform: translateX(-50%) scaleY(1);
+}
+
+/* BOTTOM */
+[dataTooltip-location="bottom"]:before,
+[dataTooltip-location="bottom"]:after {
+  top: calc(100% + 5px);
+  bottom: auto;
+}
+
+[dataTooltip-location="bottom"]:before {
+  transform: translate(-50%, 5px) scale(0.5);
+  -o-transform: translate(-50%, 5px) scale(0.5);
+  -ms-transform: translate(-50%, 5px) scale(0.5);
+  -moz-transform: translate(-50%, 5px) scale(0.5);
+  -webkit-transform: translate(-50%, 5px) scale(0.5);
+}
+[dataTooltip-location="bottom"]:hover:before {
+  transform: translate(-50%, 5px) scale(1);
+  -o-transform: translate(-50%, 5px) scale(1);
+  -ms-transform: translate(-50%, 5px) scale(1);
+  -moz-transform: translate(-50%, 5px) scale(1);
+  -webkit-transform: translate(-50%, 5px) scale(1);
+}
+
+[dataTooltip-location="bottom"]:after {
+  border-width: 0px 5px 5px 5px;
+  border-color: transparent transparent rgba(55, 64, 70, 0.9) transparent;
+  
+  transform-origin: bottom;
+  -o-transform-origin: bottom;
+  -ms-transform-origin: bottom;
+  -moz-transform-origin: bottom;
+  -webkit-transform-origin: bottom;
+}
+
+@media only screen and (max-width: 500px) {
+    [dataTooltip-location="bottom"]:before {
+        width: 100px;
+    }
+}
+
+/* SEARCHED IMAGE BOX */
+.searchedImgEl {
+    display: none;
+}
+
+/* LOADER */
+.loaderCover {
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    background-color: #212121;
+    opacity: 60%;
+}
+
+.lds-blocks {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+.lds-blocks div {
+    display: inline-block;
+    position: absolute;
+    left: 8px;
+    width: 16px;
+    background: #FFFFFF;
+    animation: lds-blocks 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+.lds-blocks div:nth-child(1) {
+    left: 8px;
+    animation-delay: -0.24s;
+}
+.lds-blocks div:nth-child(2) {
+    left: 32px;
+    animation-delay: -0.12s;
+}
+.lds-blocks div:nth-child(3) {
+    left: 56px;
+    animation-delay: 0;
+}
+@keyframes lds-blocks {
+    0% {
+    top: 8px;
+    height: 64px;
+    }
+    50%, 100% {
+    top: 24px;
+    height: 32px;
+    }
+}
+
+/* ERROR MESSAGE */
+#errorMessage {
+    width: 800px;
+    text-align: center;
+    color: red;
+    font-size: 1.2rem;
+    margin: auto;
+}
+
+/* SEARCH RESULTS */
+
+.searchContainer {
+    width: 100%;
+    height: 12vh;
+}
+
+.searchContainer h1 {
+    margin: 2vh 0 10px 0;
+}
+
+.searchContainer h4 {
+    margin: 0;
+}
+
+.bannerVideoContainer {
+    width: 95%;
+    max-width: 1400px;
+    height: 55vh;
+    position: relative;
+    align-items: flex-start;
+    margin: 0 15px 0 15px;
+}
+
+.searchResults {
+    overflow-y: scroll;
+    background-color: #FFFFFF;
+    margin-left: 15px;
+    height: 100%;
+    width: 100%;
+    min-width: 317px;
+    max-width: 437px;
+    max-height: 50vh;
+    flex: 0 2 auto;
+}
+
+.card {
+    width: 100%;
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    margin: 0 5px 7px 5px;
+}
+
+.card img {
+    margin-right: 5px;
+}
+
+.card img:hover {
+    cursor: pointer;
+}
+
+.card li {
+    font-size: 0.8rem;
+}
+
+.videoWrap {
+    height: 100%;
+    width: 100%;
+    flex: auto;
+}
+
+.focusedVideo {
+    width: 100%;
+    /*height: 100%;*/
+    max-height: 50vh;
+    background-color: #212121;
+    /* absolute positioning style
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    -webkit-transform: translate(-50%);
+    border-radius: 2px;
+    box-shadow: 0 0 29px rgb(49 54 68 / 25%);*/
+}
+
+@media only screen and (max-width: 1020px) {
+    .bannerVideoContainer {
+        height: unset;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .searchResults {
+        margin-left: 0px;
+        max-width: unset;
+    }
+
+    .searchContainer {
+        height: unset;
+        margin-bottom: 10px;
+    }
+}
+
+/* ANIME DETAILS */
+
+.animeInfo {
+    width: 100%;
+    background-color: #FFFFFF;
+    margin-top: 3vh;
+}
+
+.detailsContainer {
+    width: 100%;
+    max-width: 800px;
+    z-index: 1;
+    margin: 50px 0;
+}
+
+.animeCover {
+    box-shadow: 0 0 29px rgb(49 54 68 / 25%);
+    border-radius: 2px;
+}
+
+.animeDetails {
+    margin-left: 30px;
+}
+
+.extraDetails {
+    background-color: #F9F9F9;
+}
+
+@media only screen and (max-width: 900px) {
+    .detailsContainer {
+        flex-direction: column;
+        align-items: center;
+        width: 95%;
+    }
+
+    .animeCover {
+        width: 100%;
+        max-width: 230px;
+        height: auto;
+    }
+
+    .animeDetails {
+        margin-left: 0;
+    }
+
+    .animeDetails h2 {
+        text-align: center;
+    }
+}
+
+/* LEFT COLUMN */
+.leftCol {
+    width: 20%;
+    align-items: flex-end;
+}
+
+.mainSidebar {
+    background-color: #FFFFFF;
+    margin-top: 49px;
+    border-radius: 2px;
+    padding: 5px 15px;
+    max-width: 200px;
+    width: 100%;
+}
+
+.sidebarEntry h3 {
+    color: #5c728a;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+}
+
+.sidebarEntry p {
+    font-size: 0.78rem;
+    margin-top: 0;
+}
+
+.sidebarEntry li {
+    font-size: 0.78rem;
+}
+
+/* RIGHT COLUMN */
+.rightCol {
+    width: 80%;
+}
+
+.rightCol h2 {
+    margin: 20px 0 0 0;
+}
+
+.chList {
+    flex-wrap: wrap;
+}
+
+.chCard {
+    width: 380px;
+    height: 80px;
+    margin: 10px 15px;
+    background-color: #FFFFFF;
+    color: #404040;
+    border-radius: 3px;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 20%);
+}
+
+.chLeft {
+    justify-content: flex-start;
+    width: 190px;
+}
+
+.chDetails {
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 6px;
+}
+
+.chRight {
+    justify-content: flex-end;
+    width: 190px;
+}
+
+.vaName { 
+    margin: 6px;
+    text-align: right;
+}
+
+.chCardImage {
+    height: 80px;
+    width: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}

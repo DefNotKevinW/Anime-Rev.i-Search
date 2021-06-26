@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WEB PAGE NAME HERE</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <img id="myImg" class="searchedImgEl"src="" crossOrigin="anonymous">
+    <header class="vFlex dropArea">
+        <div class="vFlex innerHeaderWrapper">
+            <h1>Anime Rev.i Search</h1>
+            <form class="vFlex submitionForm" onsubmit="event.preventDefault()">
+                <div class="hFlex">
+                    <input type="text" class="searchbar" placeholder="Image URL...">
+                    <button type="submit" onclick="submitSearchValue()">Go</button>
+                </div>
+                <div class="hFlex">
+                    <input type="file" id="fileElem" multiple accept="image/*" onchange="manualUpload(this.files)">
+                    <label for="fileElem">Upload</label>
+                    <span dataTooltip="drop an image in the blue area or paste a link/image from your clipboard with CTRL+V / Command+V for Mac"
+                    dataTooltip-location="bottom"> 
+                        <img width="36" height="36" src="resources/help icon/icons8-help-48 (1).png">
+                    </span>
+                </div>
+            </form>
+        </div>
+    </header>
+
+    <div class="loaderCover">
+        <div id="loader"><div></div><div></div><div></div></div>
+    </div>
+    
+    <div id="errorMessage"></div>
+
+    <main class="vFlex mainContent">
+
+        <div class="vFlex searchContainer">
+            <h1>Search Results</h1>
+            <h4>Click on an image to see more details</h4>
+        </div>
+
+        <div class="hFlex bannerVideoContainer">
+            <div class="vFlex videoWrap">
+                <video id="myVid" class="focusedVideo" muted autoplay loop playsinline controls src=""></video>
+                <button onclick="myFunction()" id="detailsBtn">Details</button>
+            </div>
+            <div id="animeList" class="vFlex searchResults"></div>
+            <!--<div class="animeBanner"></div>-->
+        </div>
+
+        <div class="vFlex animeInfo">
+            <div class="hFlex detailsContainer">
+                <img src="" id="mainCoverImg" class="animeCover">
+            
+                <div class="animeDetails">
+                    <h2 id="focusedTitle"></h2>
+                    <p id="synopsis"></p>
+                </div>
+            </div>
+
+            <div class="hFlex extraDetails">
+                <div class="vFlex leftCol">
+                    <div class="mainSidebar">
+                        <div class="sidebarEntry">
+                            <h3>Episodes</h3>
+                            <p id="episodes"></p>
+                        </div>
+                        <div class="sidebarEntry">
+                            <h3>Episode Duration</h3>
+                            <p id="duration"></p>
+                        </div>
+                        <div class="sidebarEntry">
+                            <h3>Start Date</h3>
+                            <p id="startDate"></p>
+                        </div>
+                        <div class="sidebarEntry">
+                            <h3>Status</h3>
+                            <p id="status"></p>
+                        </div>
+                        <div class="sidebarEntry">
+                            <h3>Season</h3>
+                            <p id="season"></p>
+                        </div>
+                        <div class="sidebarEntry">
+                            <h3>Genres</h3>
+                            <ul id="genreList"></ul>
+                        </div>
+                        <div class="sidebarEntry">
+                            <h3>Studios</h3>
+                            <ul id="studios"></ul>
+                        </div>
+                        <div class="sidebarEntry">
+                            <h3>Source</h3>
+                            <p id="source"></p>
+                        </div>
+                        <div class="sidebarEntry">
+                            <h3>Native Title</h3>
+                            <p id="focusedSubtitle"></p>
+                        </div>
+                    </div>
+                    <div class="sidebarEntry">
+                        <h3>External Links</h3>
+                        <ul id="externalLinks"></ul>
+                    </div>
+                </div>
+    
+                <div class="vFlex rightCol">
+                    <h2>Characters</h2>
+                    <ul id="characterList" class="hFlex chList"></ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+    </footer>
+    <script src="./script.js"></script>
+</body>
+
+</html>
